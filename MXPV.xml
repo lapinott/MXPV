@@ -1,0 +1,49 @@
+<GuiXml>
+	<Controls>
+		<TopLevelControl name="MXPVUI" mouseEnabled="true" movable="true">
+			<Dimensions x="350" y="250" />
+			<OnUpdate>MXPV.EyeOfMoscow()</OnUpdate>
+			<OnMouseUp>MXPV.SaveUIPosition()</OnMouseUp>
+			<Controls>
+				<Backdrop name="MXPV_XP_CONTAINER" edgeColor="444444" centerColor="222222" alpha="0.8" >
+					<Dimensions x="350" y="50" />
+					<Anchor point="BOTTOMLEFT" />
+					<Edge edgeSize="2" />
+				</Backdrop>
+				<StatusBar name="MXPV_XP_PROGRESSBAR" color="444444" alpha="0.85">
+					<Dimensions x="342" y="42" />
+					<Anchor point="BOTTOMLEFT" offsetX="4" offsetY="-4" />
+					<Limits min="0" max="100" />
+				</StatusBar>
+				<StatusBar name="MXPV_XP_PROGRESSBAR_GAIN" color="ffffff" hidden="true" alpha="0.2">
+					<Dimensions x="342" y="42" />
+					<Anchor point="BOTTOMLEFT" offsetX="4" offsetY="-4" />
+					<Limits min="0" max="100" />
+				</StatusBar>
+				<Label name="MXPV_XP_LABEL" font="ZoFontAnnounceSmall" color="ffffff" wrapMode="ELLIPSIS" text="Status Bar" verticalAlignment="CENTER" horizontalAlignment="CENTER"  alpha="0.85">
+					<Dimensions x="350" y="50" />
+					<Anchor point="BOTTOMLEFT" />
+				</Label>
+				<Label name="MXPV_METER_LABEL" font="ZoFontAnnounceSmall" color="ffffff" centerColor="222222" wrapMode="ELLIPSIS" text="Status Bar" verticalAlignment="BOTTOM" horizontalAlignment="CENTER"  alpha="0.85">
+					<Dimensions x="340" y="188" />
+					<Anchor point="TOPLEFT" offsetX="5"/>
+				</Label>
+			</Controls>
+		</TopLevelControl>
+		<TopLevelControl name="MXPVUI_DEBUG" mouseEnabled="true" movable="true" hidden="true">
+			<Dimensions x="350" y="500" />
+			<Anchor point="TOPRIGHT" offsetX="-20" offsetY="20" />
+			<Controls>
+				<Backdrop name="MXPV_UI_DEBUG" edgeColor="444444" centerColor="222222" alpha="0.8" >
+					<Anchor point="TOPLEFT" />
+					<Edge edgeSize="1" />
+					<AnchorFill/>
+				</Backdrop>
+				<Label name="MXPV_UI_DEBUG_LABEL" font="ZoFontAnnounceSmall" color="ff2222" wrapMode="ELLIPSIS" text="Status Bar" verticalAlignment="LEFT" horizontalAlignment="LEFT"  alpha="0.85">
+					<Dimensions x="342" y="492" />
+					<Anchor point="TOPLEFT" offsetX="4" offsetY="4" />
+				</Label>
+			</Controls>
+		</TopLevelControl>
+	</Controls>
+</GuiXml>
