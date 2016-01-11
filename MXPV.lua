@@ -165,9 +165,9 @@ function MXPV.Initialize(eventCode, addOnName)
 	local LAM = LibStub("LibAddonMenu-2.0")
 	local panelData = {
 		type = "panel",
-		name = "MyXPView v"..MXPV.version,
+		name = "MyXPView v" .. MXPV.version,
 		author = "Edda",
-		version = "1.7",
+		version = MXPV.version,
 		registerForRefresh = true,
 		registerForDefaults = true,
 	}
