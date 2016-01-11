@@ -20,11 +20,11 @@
 					<Anchor point="BOTTOMLEFT" offsetX="4" offsetY="-4" />
 					<Limits min="0" max="100" />
 				</StatusBar>
-				<Label name="MXPV_XP_LABEL" font="ZoFontAnnounceSmall" color="ffffff" wrapMode="ELLIPSIS" text="Status Bar" verticalAlignment="CENTER" horizontalAlignment="CENTER"  alpha="0.85">
+				<Label name="MXPV_XP_LABEL" font="ZoFontWinH5" color="ffffff" wrapMode="ELLIPSIS" text="Status Bar" verticalAlignment="CENTER" horizontalAlignment="CENTER"  alpha="0.85">
 					<Dimensions x="350" y="50" />
 					<Anchor point="BOTTOMLEFT" />
 				</Label>
-				<Label name="MXPV_METER_LABEL" font="ZoFontAnnounceSmall" color="ffffff" centerColor="222222" wrapMode="ELLIPSIS" text="Status Bar" verticalAlignment="BOTTOM" horizontalAlignment="CENTER"  alpha="0.85">
+				<Label name="MXPV_METER_LABEL" font="ZoFontWinH5" color="ffffff" centerColor="222222" wrapMode="ELLIPSIS" text="Status Bar" verticalAlignment="BOTTOM" horizontalAlignment="CENTER"  alpha="0.85">
 					<Dimensions x="340" y="188" />
 					<Anchor point="TOPLEFT" offsetX="5"/>
 				</Label>
@@ -39,7 +39,7 @@
 					<Edge edgeSize="1" />
 					<AnchorFill/>
 				</Backdrop>
-				<Label name="MXPV_UI_DEBUG_LABEL" font="ZoFontAnnounceSmall" color="ff2222" wrapMode="ELLIPSIS" text="Status Bar" verticalAlignment="LEFT" horizontalAlignment="LEFT"  alpha="0.85">
+				<Label name="MXPV_UI_DEBUG_LABEL" font="ZoFontWinH5" color="ff2222" wrapMode="ELLIPSIS" text="Status Bar" verticalAlignment="LEFT" horizontalAlignment="LEFT"  alpha="0.85">
 					<Dimensions x="342" y="492" />
 					<Anchor point="TOPLEFT" offsetX="4" offsetY="4" />
 				</Label>

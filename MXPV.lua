@@ -19,7 +19,8 @@
 	NA @rhinobear 5k 20140518
 	NA @... 20140526 500g
 	@Sayorim 10g :) 20140602
-
+	...
+	
 ]]--
 
 
@@ -31,7 +32,7 @@ MXPV.Options = {}
 -- Init main vars
 MXPV.name = "MXPV"
 MXPV.command = "/mxpv"
-MXPV.version = 1.6
+MXPV.version = 2.24
 MXPV.varVersion = 1
 MXPV.debug = _mxpvdebug or false
 MXPV.tick = 250
@@ -110,7 +111,7 @@ function MXPV.Initialize(eventCode, addOnName)
 
 	-- Init more XP vars
 	MXPV.IsVeteran = IsUnitVeteran("player")
-	MXPV.IsChampion = IsUnitVeteran("player") and GetUnitVeteranRank("player") == 14 and GetUnitVeteranPoints("player") >= GetUnitVeteranPointsMax("player")
+	MXPV.IsChampion = IsUnitVeteran("player") and GetUnitVeteranRank("player") == 16 and GetUnitVeteranPoints("player") >= GetUnitVeteranPointsMax("player")
 	MXPV.CurrentXP = MXPV.GetUnit("XP")
 	MXPV.CurrentLevel = MXPV.GetUnit("Level")
 	MXPV.CurrentMaxXP = MXPV.GetUnit("XPMax")
@@ -166,7 +167,7 @@ function MXPV.Initialize(eventCode, addOnName)
 		type = "panel",
 		name = "MyXPView v"..MXPV.version,
 		author = "Edda",
-		version = "1.6",
+		version = "1.7",
 		registerForRefresh = true,
 		registerForDefaults = true,
 	}
@@ -429,6 +430,7 @@ end
 
 -- Combat state
 function MXPV.GetSetCombatState (event, inCombat)
+
 	-- Save combat state
 	MXPV.CombatState = inCombat
 
@@ -476,7 +478,7 @@ function MXPV.Update (unitTag, currentExp, maxExp, reason)
 
 		-- Update our vars
 		MXPV.IsVeteran = MXPV.IsVeteran or IsUnitVeteran("player")
-		MXPV.IsChampion = MXPV.IsChampion or MXPV.IsVeteran and GetUnitVeteranRank("player") == 14 and GetUnitVeteranPoints("player") >= GetUnitVeteranPointsMax("player")
+		MXPV.IsChampion = MXPV.IsChampion or MXPV.IsVeteran and GetUnitVeteranRank("player") == 16 and GetUnitVeteranPoints("player") >= GetUnitVeteranPointsMax("player")
 		MXPV.CurrentXP = MXPV.GetUnit("XP")
 		MXPV.CurrentLevel = MXPV.GetUnit("Level")
 		MXPV.CurrentMaxXP = MXPV.GetUnit("XPMax")
