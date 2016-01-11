@@ -1,7 +1,7 @@
 ## Title: MyXPView
 ## Author: Edda
-## Version: 1.7
-## APIVersion: 100012
+## Version: 2.24
+## APIVersion: 100013
 ## SavedVariables: MXPVvars
 
 Libs/LibStub/LibStub.lua
