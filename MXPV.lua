@@ -86,6 +86,7 @@ MXPV.Options.MeterMode = true
 MXPV.Options.CombatOnly = false
 MXPV.Options.StartPaused = false
 MXPV.Options.CombatUnpauses = false
+MXPV.Options.AutoPauseTimeout = 0
 MXPV.Options.XPMode = true
 MXPV.Options.RPMode = false
 MXPV.Options.AutoSwitch = true
@@ -258,6 +259,16 @@ function MXPV.Initialize(eventCode, addOnName)
 			default = MXPV.Options.CombatUnpauses,
 		},
 		{
+			type = "slider",
+			name = "+ Auto-Pause Timeout - in minutes",
+			tooltip = "Automatically pause the timer if out of combat for this long(0 disables this)",
+			min = 0,
+			max = 60,
+			getFunc = function() return math.floor(100 * MXPV.SavedVars.AutoPauseTimeout) end,
+			setFunc = function(value) MXPV.SetAutoPauseTimeout(value / 100) end,
+			default = math.floor(100 * MXPV.Options.AutoPauseTimeout),
+		},
+		{
 			type = "description",
 			title = nil,
 			text = "+ Reset the XP meter",
@@ -333,9 +344,10 @@ function MXPV.EyeOfMoscow ()
 	MXPV.nextUpdate = now + MXPV.tick
 
 	-- Update meter
-	if not MXPV.SavedVars.CombatOnly or MXPV.SavedVars.CombatOnly and not MXPV.Meter.Paused then MXPV.Meter.Update() end
+	local pauserEnabled = MXPV.SavedVars.CombatOnly or MXPV.SavedVars.AutoPauseTimeout ~= 0
+	if not pauserEnabled or pauserEnabled and not MXPV.Meter.Paused then MXPV.Meter.Update() end
 
-	-- or MXPV.Meter.Update()
+	if MXPV.SavedVars.AutoPauseTimeout ~= 0 and not MXPV.Meter.Paused then MXPV.HandleAutoPausing() end
 
 	-- Pool Management
 	if (now - MXPV.lastXPGainTime) > MXPV.SavedVars.fadeXPGainDelay and (now - MXPV.lastRPGainTime) > MXPV.SavedVars.fadeXPGainDelay and (MXPV.fadeXPCountdown or MXPV.fadeRPCountdown) then
@@ -476,6 +488,15 @@ function MXPV.GetSetCombatState (event, inCombat)
 	-- Handle auto-switch
 	MXPV.AutoSwitchMode()
 
+end
+
+-- Pause if autopause timeout reached
+function MXPV.HandleAutoPausing()
+	local now = GetGameTimeMilliseconds()
+	local inCombat = MXPV.OutOfCombatTime < MXPV.StartOfCombatTime
+	if not inCombat and (now - MXPV.OutOfCombatTime) > (MXPV.SavedVars.AutoPauseTimeout * 60 * 1000) then
+		MXPV.Meter.Pause()
+	end
 end
 
 -- Reticle changed event
@@ -864,6 +885,15 @@ function MXPV.ToggleCombatUnpauses (mode)
 	d("MyXpView v" .. MXPV.version .. " : combatunpauses now set to " .. tostring(MXPV.SavedVars.CombatUnpauses))
 end
 
+-- Pause the timer after a set amount of time out-of-combat
+function MXPV.SetAutoPauseTimeout (mode)
+
+	MXPV.SavedVars.AutoPauseTimeout = tonumber(mode)
+
+	-- Notify
+	d("MyXpView v" .. MXPV.version .. " : autopause now set to " .. tostring(MXPV.SavedVars.AutoPauseTimeout))
+end
+
 -- Autoswitch toggle
 function MXPV.ToggleAutoSwitch (mode)
 
@@ -973,6 +1003,7 @@ function MXPV.GetHelpString()
 	helpString = helpString .. "- 'combatonly' : enable/disable XP meter updating only when in combat \n "
 	helpString = helpString .. "- 'startpaused' : enable/disable pausing meter on login or reset \n "
 	helpString = helpString .. "- 'combatunpauses' : enable/disable unpausing meter when entering combat \n "
+	helpString = helpString .. "- 'autopause x' : set the number of minutes out-of-combat before pausing the timer ('0' to disable) \n "
 	helpString = helpString .. "- 'switch' : switch between XP and RP tracking \n "
 	helpString = helpString .. "- 'autoswitch' : auto-switch between XP and RP tracking \n "
 	helpString = helpString .. "- 'scale' : scales the UI size - from 0 to 1 \n "
@@ -995,6 +1026,7 @@ function MXPV.Dump()
 	d(string.format("MXPV.SavedVars.CombatOnly : %s", tostring(MXPV.SavedVars.CombatOnly)))
 	d(string.format("MXPV.SavedVars.StartPaused : %s", tostring(MXPV.SavedVars.StartPaused)))
 	d(string.format("MXPV.SavedVars.CombatUnpauses : %s", tostring(MXPV.SavedVars.CombatUnpauses)))
+	d(string.format("MXPV.SavedVars.AutoPauseTimeout : %s", tostring(MXPV.SavedVars.AutoPauseTimeout)))
 	d(string.format("MXPV.SavedVars.XPMode : %s", tostring(MXPV.SavedVars.XPMode)))
 	d(string.format("MXPV.SavedVars.RPMode : %s", tostring(MXPV.SavedVars.RPMode)))
 	d(string.format("MXPV.SavedVars.AutoSwitch : %s", tostring(MXPV.SavedVars.AutoSwitch)))
@@ -1016,6 +1048,11 @@ function MXPV.SlashCommands(text)
 	elseif (trigger == "combatonly") then MXPV.ToggleCombatOnly(not MXPV.SavedVars.CombatOnly)
 	elseif (trigger == "startpaused") then MXPV.ToggleStartPaused(not MXPV.SavedVars.StartPaused)
 	elseif (trigger == "combatunpauses") then MXPV.ToggleCombatUnpauses(not MXPV.SavedVars.CombatUnpauses)
+	elseif (trigger == "autopause") then
+		local timeout = command[2]
+		if tonumber(timeout) ~= nil then
+			MXPV.SetAutoPauseTimeout(timeout)
+		else d("MyXpView " .. MXPV.version .. " : wrong input value for 'autopause x' - please insert a number.") end
 	elseif (trigger == "autoswitch") then MXPV.ToggleAutoSwitch(not MXPV.SavedVars.AutoSwitch)
 	elseif (trigger == "fade") then
 		local fadevalue = command[2]
